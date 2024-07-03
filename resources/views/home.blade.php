@@ -35,31 +35,31 @@
             z-index: 2;
             max-width: 600px;
             padding: 40px;
-            background: rgba(139, 69, 19, 0.9); /* Dark brown background */
+            background: rgba(139, 69, 19, 0.9);
             border-radius: 15px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-            border: 2px solid #d4af37; /* Gold border */
+            border: 2px solid #d4af37;
         }
 
         h1 {
             font-family: 'Great Vibes', cursive;
             font-size: 4em;
             margin-bottom: 20px;
-            color: #d4af37; /* Gold color */
+            color: #d4af37;
         }
 
         p {
             font-size: 1.3em;
             margin-bottom: 30px;
-            color: #f5deb3; /* Wheat color */
+            color: #f5deb3; 
         }
 
         .btn {
             display: inline-block;
             padding: 15px 30px;
             font-size: 1.2em;
-            color: #8b4513; /* Saddle brown color */
-            background: #d4af37; /* Gold background */
+            color: #8b4513; 
+            background: #d4af37; 
             border: none;
             border-radius: 25px;
             cursor: pointer;
@@ -68,8 +68,8 @@
         }
 
         .btn:hover {
-            background: #f5deb3; /* Wheat color */
-            color: #8b4513; /* Saddle brown color */
+            background: #f5deb3; 
+            color: #8b4513; 
             transform: scale(1.05);
         }
     </style>
