@@ -112,33 +112,39 @@
     </div>
 
     <script>
-        async function generateStory() {
-            const prompt = document.getElementById('prompt').value;
-            const output = document.getElementById('story-output');
-            output.innerText = "Eldrin is weaving a tale based on your prompt...";
+    async function generateStory() {
+    const prompt = document.getElementById('prompt').value;
+    const output = document.getElementById('story-output');
+    output.innerText = "Eldrin is weaving a tale based on your prompt...";
 
-            try {
-                const response = await fetch('/generate-story', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ prompt: prompt })
-                });
+    try {
+        const response = await fetch('/generate-story', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ prompt: prompt })
+        });
 
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`Error ${response.status}: ${errorText}`);
-                }
-
-                const data = await response.json();
-                output.innerText = data.choices[0].message.content.trim();
-            } catch (error) {
-                console.error('Error:', error);
-                output.innerText = "Eldrin encountered an error while weaving the tale.";
-            }
+        if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
         }
+
+        const data = await response.json();
+        console.log(data); // Log the response data for debugging
+
+        if (data.error) {
+            output.innerText = `Error: ${data.error}`;
+        } else {
+            output.innerText = data.story; // Assuming 'story' is the key holding the generated text
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        output.innerText = "Eldrin encountered an error while weaving the tale.";
+    }
+}
+
     </script>
 </body>
 </html>
