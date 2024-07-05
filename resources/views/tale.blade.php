@@ -12,7 +12,6 @@
             font-family: 'Montserrat', sans-serif;
             background: url('{{ asset('/eldrin.jpg') }}') no-repeat center center fixed;            
             background-size: cover;
-            /* color: #f5f5f5; */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -111,40 +110,48 @@
         </div>
     </div>
 
+    <!-- Include Axios via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-    async function generateStory() {
-    const prompt = document.getElementById('prompt').value;
-    const output = document.getElementById('story-output');
-    output.innerText = "Eldrin is weaving a tale based on your prompt...";
+        async function generateStory() {
+            const prompt = document.getElementById('prompt').value;
+            const output = document.getElementById('story-output');
+            output.innerText = "Eldrin is weaving a tale based on your prompt...";
 
-    try {
-        const response = await fetch('/generate-story', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({ prompt: prompt })
-        });
+            const maxRetries = 5;
+            let retryCount = 0;
+            const retryDelay = (retryCount) => Math.pow(2, retryCount) * 1000; // Exponential backoff
 
-        if (!response.ok) {
-            throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+            async function makeRequest() {
+                try {
+                    const response = await axios.post('/generate-story', {
+                        prompt: prompt
+                    }, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    });
+
+                    if (response.status !== 200) {
+                        throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+                    }
+
+                    output.innerText = response.data.story;
+                } catch (error) {
+                    if (error.response && error.response.status === 429 && retryCount < maxRetries) {
+                        retryCount++;
+                        console.log(`Retry ${retryCount}/${maxRetries} in ${retryDelay(retryCount)}ms`);
+                        setTimeout(makeRequest, retryDelay(retryCount));
+                    } else {
+                        console.error('Error:', error);
+                        output.innerText = "Eldrin encountered an error while weaving the tale.";
+                    }
+                }
+            }
+
+            makeRequest();
         }
-
-        const data = await response.json();
-        console.log(data); // Log the response data for debugging
-
-        if (data.error) {
-            output.innerText = `Error: ${data.error}`;
-        } else {
-            output.innerText = data.story; // Assuming 'story' is the key holding the generated text
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        output.innerText = "Eldrin encountered an error while weaving the tale.";
-    }
-}
-
     </script>
 </body>
 </html>

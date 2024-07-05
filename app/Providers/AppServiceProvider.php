@@ -14,8 +14,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(TextSimilarityServices::class, function ($app) {
-            return new TextSimilarityServices();
+        $apiKey = config('similarityapi.TWINWORD_API_KEY');
+
+        $this->app->singleton(TextSimilarityServices::class, function ($app) use ($apiKey) {
+            return new TextSimilarityServices($apiKey);
         });
     }
 }

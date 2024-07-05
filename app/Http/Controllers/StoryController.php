@@ -19,7 +19,7 @@ class StoryController extends Controller
     public function generate(Request $request)
     {
         $userPrompt = $request->input('prompt');
-        $similarityThreshold = 0.8; // Adjust as needed
+        $similarityThreshold = 0.8; 
 
         // Check for an exact match in the database
         $exactMatch = PromptResponse::where('prompt', $userPrompt)->first();
@@ -29,13 +29,13 @@ class StoryController extends Controller
         }
 
         // Check for similar prompts
-        // $allPrompts = PromptResponse::all();
-        // foreach ($allPrompts as $storedPrompt) {
-        //     $similarityScore = $this->similarityService->calculateSimilarity($userPrompt, $storedPrompt->prompt);
-        //     if ($similarityScore >= $similarityThreshold) {
-        //         return response()->json(['story' => $storedPrompt->response]);
-        //     }
-        // }
+        $allPrompts = PromptResponse::all();
+        foreach ($allPrompts as $storedPrompt) {
+            $similarityScore = $this->similarityService->calculateSimilarity($userPrompt, $storedPrompt->prompt);
+            if ($similarityScore >= $similarityThreshold) {
+                return response()->json(['story' => $storedPrompt->response]);
+            }
+        }
 
         // If no match found, call OpenAI API to generate a new story
         try {
@@ -51,7 +51,7 @@ class StoryController extends Controller
             ]);
 
             $generatedStory = $result['choices'][0]['message']['content'];
-            dd($result);
+            // dd($result);
             // Store the new prompt and response in the database
             PromptResponse::create([
                 'prompt' => $userPrompt,
