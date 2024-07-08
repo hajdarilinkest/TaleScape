@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,7 @@
         body {
             margin: 0;
             font-family: 'Montserrat', sans-serif;
-            background: url('{{ asset('/eldrin.jpg') }}') no-repeat center center fixed;            
+            background: url('{{ asset('/eldrin.jpg') }}') no-repeat center center fixed;
             background-size: cover;
             display: flex;
             justify-content: center;
@@ -34,23 +35,36 @@
             z-index: 2;
             max-width: 600px;
             padding: 40px;
-            background: rgba(139, 69, 19, 0.9); 
+            background: rgba(139, 69, 19, 0.9);
             border-radius: 15px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-            border: 2px solid #d4af37; 
+            border: 2px solid #d4af37;
+            opacity: 0;
+            animation: fadeIn 1.5s ease-in-out forwards;
         }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
 
         h1 {
             font-family: 'Great Vibes', cursive;
             font-size: 4em;
             margin-bottom: 20px;
-            color: #d4af37; 
+            color: #d4af37;
         }
 
         p {
             font-size: 1.3em;
             margin-bottom: 30px;
-            color: #f5deb3; 
+            color: #f5deb3;
         }
 
         .btn {
@@ -67,7 +81,7 @@
         }
 
         .btn:hover {
-            background: #f5deb3; 
+            background: #f5deb3;
             color: #8b4513;
             transform: scale(1.05);
         }
@@ -88,19 +102,21 @@
         .story-output {
             margin-top: 20px;
             padding: 20px;
-            background: rgba(255, 255, 255, 0.2); 
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
-            color: #f5deb3; 
-            min-height: 150px; 
+            color: #f5deb3;
+            min-height: 150px;
         }
     </style>
 </head>
+
 <body>
     <div class="overlay"></div>
     <div class="container">
         <h1>Greetings</h1>
-        <p>Welcome, traveler! I am Eldrin the Wise, the bard of TaleScape. Share with me a prompt, an idea, or a dream of times past,
-             and I shall weave a tale for you.</p>
+        <p>Welcome, traveler! I am Eldrin the Wise, the bard of TaleScape. Share with me a prompt, an idea, or a dream
+            of times past,
+            and I shall weave a tale for you.</p>
         <div class="prompt-container">
             <input type="text" id="prompt" placeholder="Enter your prompt here...">
             <button class="btn" onclick="generateStory()">Weave My Tale</button>
@@ -154,4 +170,5 @@
         }
     </script>
 </body>
+
 </html>

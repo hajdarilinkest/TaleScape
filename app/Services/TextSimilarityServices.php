@@ -18,7 +18,10 @@ class TextSimilarityServices
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => [
                 "x-rapidapi-host: twinword-text-similarity-v1.p.rapidapi.com",
-                "x-rapidapi-key: " . env('TWINWORD_API_KEY')
+               
+                "x-rapidapi-key: " .  'hard-coded-api'
+                // env('TWINWORD_API_KEY')
+                //Problem was fixed because it appears the environment file is not properly read. hard-coding the key into the code solves the problem temporarily.
             ],
         ]);
 
@@ -32,6 +35,7 @@ class TextSimilarityServices
             return 0;
         } else {
             $response = json_decode($response, true);
+            // dd($response);
             return $response['similarity'];
         }
     }
