@@ -19,7 +19,7 @@ class TextSimilarityServices
             CURLOPT_HTTPHEADER => [
                 "x-rapidapi-host: twinword-text-similarity-v1.p.rapidapi.com",
                
-                "x-rapidapi-key: " .  'hard-coded-api'
+                "x-rapidapi-key: " .  config('similarityapi.TWINWORD_API_KEY')
                 // env('TWINWORD_API_KEY')
                 //Problem was fixed because it appears the environment file is not properly read. hard-coding the key into the code solves the problem temporarily.
             ],
